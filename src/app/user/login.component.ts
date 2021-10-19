@@ -9,12 +9,14 @@ import { AuthService } from "./auth.service";
     `]
 })
 
+// Template Driven Form + HTML
 export class LoginComponent {
     password!: any
     userName!: any
     mouseoverLogin!: boolean
+    text: string = "hello world"
     constructor(private authService: AuthService, private router: Router) {
-
+        console.log(this.text.split(' ').map((f) => f.charAt(0).toUpperCase() + f.slice(1)).join(' '))
     }
 
     login (formValue: any) {

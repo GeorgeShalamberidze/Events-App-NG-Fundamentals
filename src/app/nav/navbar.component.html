@@ -16,9 +16,9 @@
                 <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                <li >
-                    <a href="">Angular Connect</a>
-                </li>
+                    <li >
+                        <a href="">Angular Connect</a>
+                    </li>
                 </ul>
             </li>
             </ul>
@@ -30,14 +30,20 @@
                 </li>
             </ul>
             </div>
-            <form id="searchForm"  class="navbar-form navbar-right"  >
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search Sessions" >
-            </div>
-            <button class="btn btn-default" >
-                Search
-            </button>
+            <form id="searchForm"  class="navbar-form navbar-right" (ngSubmit)="searchSessions(searchTerm)">
+                <div class="form-group">
+                    <input [(ngModel)]="searchTerm" name="searchTerm" type="text" class="form-control" placeholder="Search Sessions" >
+                </div>
+                <button class="btn btn-default" modal-trigger="searchResults">
+                    Search
+                </button>
             </form>
       </div>
     </div>
   </div>
+
+  <simple-modal elementId="searchResults" title="Matching Sessions">
+      <div class="list-group">
+          <a *ngFor="let session of foundSessions" class="list-group-item" [routerLink]="['/events', session.id]">{{session.name}}</a>
+      </div>
+  </simple-modal>

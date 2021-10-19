@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from 'src/routes';
-import { ToastrService } from './common/toastr.service';
 import { Error404Component } from './errors/404.component';
 
 import { EventsAppComponent } from './events-app.component';
@@ -15,9 +14,17 @@ import {
   EventsListComponent,
   EventListResolver,
   EventDetailsComponent,
-  EventThumbnailComponent
+  EventThumbnailComponent,
+  DurationPipe
 } from "./events/index"
 import { AuthService } from './user/auth.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CreateSessionComponent } from './events/events-details/create-session.component';
+import { SessionListComponent } from './events/events-details/session-list.component';
+import { JQ_TOKEN, Toastr, CollapsibleWellComponent, TOASTR_TOKEN, SimpleModalComponent, ModalTriggerDirective } from './common/index';
+
+declare let toastr: Toastr
+declare let jQuery: any
 
 @NgModule({
   declarations: [
@@ -26,16 +33,25 @@ import { AuthService } from './user/auth.service';
     EventThumbnailComponent,
     NavBarComponent,
     EventDetailsComponent,
-    CreateEventComponent,
     Error404Component,
+    CreateEventComponent,
+    CreateSessionComponent,
+    SessionListComponent,
+    CollapsibleWellComponent,
+    DurationPipe,
+    SimpleModalComponent,
+    ModalTriggerDirective
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     EventService, 
-    ToastrService, 
+    { provide: TOASTR_TOKEN, useValue: toastr }, 
+    { provide: JQ_TOKEN, useValue: jQuery }, 
     EventRouteActivator,
     {
       provide: "canDeactivateCreateEvent",

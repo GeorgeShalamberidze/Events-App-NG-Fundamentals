@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core"
+import { EventEmitter, Injectable } from "@angular/core"
 import { Observable, Subject } from "rxjs"
-import { IEvent } from ".";
+import { IEvent, ISession } from ".";
 
 @Injectable()
 export class EventService {
@@ -15,6 +15,48 @@ export class EventService {
 
     getEvent(id: number) {
         return EVENTS.find(event => event.id === id)
+    }
+
+    saveEvent(event: IEvent) {
+      event.id = 999
+      event.sessions = []
+      EVENTS.push(event)
+    }
+
+    updateEvent(event: any) {
+      let index = EVENTS.findIndex(x => x.id = event.id)
+      EVENTS[index] = event
+    }
+
+    searchSessions(term: string){
+      var term = term.toLowerCase()
+      var results: ISession[] = []
+      var newMatchingSessions = []
+
+      // EVENTS.forEach(event => {
+      //   var matchingSessions = event.sessions.filter(s => s.name.toLocaleLowerCase().indexOf(term) > -1)
+      //   matchingSessions = matchingSessions.map((session: any) => {
+      //     session.id = event.id
+      //     return session
+      //   })
+      //   results = results.concat(matchingSessions)
+      // })
+
+      EVENTS.forEach(event => {
+        var matchingSessions = event.sessions.filter(s => s.name.toLowerCase().includes(term))
+        newMatchingSessions = matchingSessions.map((session: any) => {
+          session.id = event.id
+          return session
+        })
+        results = results.concat(newMatchingSessions)
+      })
+
+      // WE need to return observable. passing true to EventEmitter tells it to deliver its event asynchronously 
+      var emitter = new EventEmitter(true)
+      setTimeout(() => {
+        emitter.emit(results)
+      }, 100)
+      return emitter
     }
 }
 
