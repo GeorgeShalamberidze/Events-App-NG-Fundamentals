@@ -14,14 +14,21 @@ export class LoginComponent {
     password!: any
     userName!: any
     mouseoverLogin!: boolean
-    text: string = "hello world"
+    loginFailed: boolean = false
+
     constructor(private authService: AuthService, private router: Router) {
-        console.log(this.text.split(' ').map((f) => f.charAt(0).toUpperCase() + f.slice(1)).join(' '))
     }
 
     login (formValue: any) {
         this.authService.loginUser(formValue.userName, formValue.password)
-        this.router.navigate(['events'])
+            .subscribe((resp) => {
+                if (!resp) {
+                    this.loginFailed = true              
+                }
+                else {
+                    this.router.navigate(['events'])
+                }
+            })
     }
 
     cancel() {
