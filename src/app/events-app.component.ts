@@ -9,6 +9,7 @@ import { AuthService } from './user/auth.service';
   `,
 })
 export class EventsAppComponent {
+  title: string = 'ng-fundamentals'
   constructor(private auth: AuthService) {
   }
 
